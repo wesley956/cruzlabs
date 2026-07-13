@@ -1,2 +1,12 @@
 export const metadata = { title: "Política de Privacidade" };
-export default function PrivacyPage() { return <main className="mx-auto max-w-3xl px-5 py-16"><h1 className="text-4xl font-bold">Política de Privacidade</h1><p className="mt-5 leading-8 text-[var(--foreground-muted)]">Documento jurídico em preparação. A versão final deverá explicar coleta, uso, armazenamento, compartilhamento e exclusão de dados.</p></main>; }
+export default function PrivacyPage() {
+  return (
+    <main className="mx-auto max-w-3xl px-5 py-16">
+      <h1 className="text-4xl font-bold">Política de Privacidade</h1>
+      <p className="mt-5 leading-8 text-[var(--foreground-muted)]">
+        Documento jurídico em preparação. A versão final deverá explicar coleta, uso, armazenamento,
+        compartilhamento e exclusão de dados.
+      </p>
+    </main>
+  );
+}

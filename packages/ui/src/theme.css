@@ -1,0 +1,21 @@
+:root {
+  --background: #f7f5f0;
+  --surface: #fdfcf9;
+  --surface-soft: #f0ece5;
+  --foreground: #292824;
+  --foreground-muted: #6d6961;
+  --border: #ded8ce;
+  --brand: #292824;
+  --brand-strong: #3a3833;
+  --brand-soft: #eee9df;
+  --sage: #747b69;
+  --sage-soft: #e6e8e1;
+  --gold: #aa9368;
+  --gold-soft: #f2ecdf;
+  --success: #68745f;
+  --danger: #9b5c55;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}

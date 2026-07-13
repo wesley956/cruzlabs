@@ -1,9 +1,4 @@
-export const APPOINTMENT_STATUSES = [
-  "confirmed",
-  "completed",
-  "canceled",
-  "no_show",
-] as const;
+export const APPOINTMENT_STATUSES = ["confirmed", "completed", "canceled", "no_show"] as const;
 
 export type AppointmentStatus = (typeof APPOINTMENT_STATUSES)[number];
 

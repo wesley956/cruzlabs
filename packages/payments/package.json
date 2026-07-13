@@ -12,6 +12,6 @@
     "test": "node -e \"console.log('Payment tests pending')\""
   },
   "devDependencies": {
-    "typescript": "6.0.3"
+    "typescript": "^6.0.0"
   }
 }

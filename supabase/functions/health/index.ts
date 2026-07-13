@@ -1,6 +1,5 @@
 Deno.serve(() => {
-  return new Response(
-    JSON.stringify({ service: "cruz-agenda", status: "ok" }),
-    { headers: { "content-type": "application/json" } },
-  );
+  return new Response(JSON.stringify({ service: "cruz-agenda", status: "ok" }), {
+    headers: { "content-type": "application/json" },
+  });
 });

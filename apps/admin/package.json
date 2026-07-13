@@ -1,4 +1,5 @@
 {
+  "name": "@cruz-agenda/admin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,17 +13,16 @@
     "@cruz-agenda/domain": "workspace:*",
     "@cruz-agenda/supabase": "workspace:*",
     "@cruz-agenda/ui": "workspace:*",
-    "next": "16.2.10",
-    "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.3.2",
-    "@types/node": "^24.3.0",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "tailwindcss": "4.3.2",
-    "typescript": "6.0.3"
-  },
-  "name": "@cruz-agenda/admin"
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^6.0.0"
+  }
 }
