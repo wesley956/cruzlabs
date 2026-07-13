@@ -38,3 +38,20 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v3
+        with:
+          version: 2.84.2
+
+      - name: Start local database and apply migrations
+        run: supabase db start
+
+      - name: Run pgTAP database tests
+        run: supabase test db
