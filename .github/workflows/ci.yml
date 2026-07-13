@@ -1,19 +1,19 @@
-name: CI bootstrap
+name: CI
 
 on:
   pull_request:
+  push:
+    branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  bootstrap:
+  quality:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout feature branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -24,30 +24,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Apply validated source normalization
-        shell: bash
-        run: |
-          cp .github/workflows/ci.yml /tmp/ci-bootstrap.yml
-          sed -i '/"baseUrl": "\.",/d' apps/web/tsconfig.json apps/admin/tsconfig.json
-          pnpm format
-          cp /tmp/ci-bootstrap.yml .github/workflows/ci.yml
-
-      - name: Commit formatted source and lockfile
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md apps packages supabase pnpm-lock.yaml pnpm-workspace.yaml package.json
-          if git diff --cached --quiet; then
-            echo "No bootstrap changes to commit"
-          else
-            git commit -m "format source and lock dependencies"
-            git push origin HEAD:${{ github.head_ref }}
-          fi
+        run: pnpm install --frozen-lockfile
 
       - name: Check formatting
         run: pnpm format:check
