@@ -85,7 +85,7 @@ create table public.businesses (
   pause_reason text,
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now()),
-  constraint businesses_custom_profession_check check (
+  constraint businesses_profession_requirements_check check (
     (profession_key = 'other' and custom_profession is not null)
     or
     (profession_key <> 'other')
