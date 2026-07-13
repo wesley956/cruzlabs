@@ -28,25 +28,22 @@ export default async function ServicesOnboardingPage() {
     redirect("/configuracao/profissao");
   }
 
-  const [{ data: templateRows, error: templatesError }, { data: serviceRows }] =
-    await Promise.all([
-      supabase
-        .from("service_templates")
-        .select(
-          "id, name, description, suggested_duration_minutes, suggested_price_cents",
-        )
-        .eq("profession_key", business.profession_key)
-        .eq("is_active", true)
-        .order("display_order"),
-      supabase
-        .from("services")
-        .select(
-          "id, template_id, name, description, duration_minutes, price_cents, show_price, online_booking_enabled",
-        )
-        .eq("business_id", business.id)
-        .eq("is_active", true)
-        .order("display_order"),
-    ]);
+  const [{ data: templateRows, error: templatesError }, { data: serviceRows }] = await Promise.all([
+    supabase
+      .from("service_templates")
+      .select("id, name, description, suggested_duration_minutes, suggested_price_cents")
+      .eq("profession_key", business.profession_key)
+      .eq("is_active", true)
+      .order("display_order"),
+    supabase
+      .from("services")
+      .select(
+        "id, template_id, name, description, duration_minutes, price_cents, show_price, online_booking_enabled",
+      )
+      .eq("business_id", business.id)
+      .eq("is_active", true)
+      .order("display_order"),
+  ]);
 
   if (templatesError) {
     return (

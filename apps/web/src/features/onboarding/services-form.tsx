@@ -54,9 +54,7 @@ function priceToCents(value: string): number | string | null {
     return null;
   }
 
-  const normalized = trimmed.includes(",")
-    ? trimmed.replace(/\./g, "").replace(",", ".")
-    : trimmed;
+  const normalized = trimmed.includes(",") ? trimmed.replace(/\./g, "").replace(",", ".") : trimmed;
   const parsed = Number(normalized);
 
   if (!Number.isFinite(parsed) || parsed < 0) {
@@ -131,9 +129,7 @@ export function ServicesForm({
   existingServices: ExistingService[];
 }) {
   const [state, formAction] = useActionState(saveServicesAction, INITIAL_STATE);
-  const [services, setServices] = useState<EditableService[]>(
-    existingServices.map(fromExisting),
-  );
+  const [services, setServices] = useState<EditableService[]>(existingServices.map(fromExisting));
 
   const selectedTemplateIds = useMemo(
     () => new Set(services.flatMap((service) => (service.templateId ? [service.templateId] : []))),
@@ -236,7 +232,9 @@ export function ServicesForm({
               Seus serviços
             </p>
             <h2 className="mt-2 text-3xl font-semibold">
-              {services.length === 0 ? "Adicione o primeiro serviço" : `${services.length} serviço${services.length === 1 ? "" : "s"}`}
+              {services.length === 0
+                ? "Adicione o primeiro serviço"
+                : `${services.length} serviço${services.length === 1 ? "" : "s"}`}
             </h2>
           </div>
           <button
@@ -362,7 +360,9 @@ export function ServicesForm({
                       className="mt-1 size-4 accent-[var(--sage)]"
                     />
                     <span>
-                      <span className="block text-sm font-semibold">Permitir agendamento online</span>
+                      <span className="block text-sm font-semibold">
+                        Permitir agendamento online
+                      </span>
                       <span className="mt-1 block text-xs leading-5 text-[var(--foreground-muted)]">
                         Desative para usar este serviço apenas em agendamentos manuais.
                       </span>

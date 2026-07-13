@@ -20,8 +20,7 @@ type ServiceValidationFailure = {
 
 export type ServiceValidationResult = ServiceValidationSuccess | ServiceValidationFailure;
 
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function normalizeText(value: unknown): string {
   return typeof value === "string" ? value.trim().replace(/\s+/g, " ") : "";
@@ -57,7 +56,8 @@ export function validateOnboardingServices(input: unknown): ServiceValidationRes
     const description = normalizeDescription(service.description);
     const durationMinutes = Number(service.durationMinutes);
     const rawPriceCents = service.priceCents;
-    const priceCents = rawPriceCents === null || rawPriceCents === "" ? null : Number(rawPriceCents);
+    const priceCents =
+      rawPriceCents === null || rawPriceCents === "" ? null : Number(rawPriceCents);
     const templateId = service.templateId === null ? null : normalizeText(service.templateId);
     const nameKey = name.toLocaleLowerCase("pt-BR");
 
