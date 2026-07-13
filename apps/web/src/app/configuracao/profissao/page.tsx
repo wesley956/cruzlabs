@@ -1,17 +1,42 @@
-const professions = [
-  "Manicure e pedicure",
-  "Designer de sobrancelhas",
-  "Lash designer",
-  "Cabeleireira",
-  "Barbeiro",
-  "Esteticista",
-  "Maquiadora",
-  "Outra atividade",
-];
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@cruz-agenda/supabase/server";
+import { ProfessionForm } from "@/features/onboarding/onboarding-forms";
 
 export const metadata = { title: "Escolha sua profissão" };
+export const dynamic = "force-dynamic";
 
-export default function ProfessionPage() {
+export default async function ProfessionPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/entrar?next=/configuracao/profissao");
+  }
+
+  const [{ data: professions, error }, { data: business }] = await Promise.all([
+    supabase
+      .from("profession_templates")
+      .select("key, name, description")
+      .eq("is_active", true)
+      .order("display_order"),
+    supabase.from("businesses").select("profession_key, custom_profession").maybeSingle(),
+  ]);
+
+  if (error || !professions?.length) {
+    return (
+      <main className="min-h-screen px-5 py-8">
+        <div className="mx-auto max-w-3xl rounded-3xl border border-[var(--danger)] bg-[var(--surface)] p-8">
+          <h1 className="text-4xl font-semibold">Não conseguimos carregar esta etapa</h1>
+          <p className="mt-4 leading-7 text-[var(--foreground-muted)]">
+            Atualize a página. Caso o problema continue, tente entrar novamente.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen px-5 py-8">
       <div className="mx-auto max-w-3xl">
@@ -28,30 +53,12 @@ export default function ProfessionPage() {
         <p className="mt-4 text-lg leading-8 text-[var(--foreground-muted)]">
           Usaremos essa escolha para sugerir serviços que você poderá editar livremente.
         </p>
-        <form className="mt-8">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {professions.map((profession) => (
-              <label
-                key={profession}
-                className="flex min-h-20 cursor-pointer items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 font-semibold transition hover:border-[var(--gold)] hover:bg-[var(--surface-soft)]"
-              >
-                <input
-                  type="radio"
-                  name="profession"
-                  value={profession}
-                  className="size-4 accent-[var(--sage)]"
-                />
-                {profession}
-              </label>
-            ))}
-          </div>
-          <button
-            type="submit"
-            className="mt-8 min-h-12 w-full rounded-xl bg-[var(--brand)] px-6 font-semibold text-[var(--surface)] hover:bg-[var(--brand-strong)] sm:w-auto"
-          >
-            Continuar
-          </button>
-        </form>
+
+        <ProfessionForm
+          professions={professions}
+          initialProfessionKey={business?.profession_key}
+          initialCustomProfession={business?.custom_profession ?? undefined}
+        />
       </div>
     </main>
   );

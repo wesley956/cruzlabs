@@ -1,5 +1,7 @@
 begin;
 
+create extension if not exists pgtap with schema extensions;
+
 select plan(6);
 
 select has_table('public', 'profiles', 'profiles table exists');
@@ -13,9 +15,9 @@ select policies_are(
   'profiles has the expected RLS policies'
 );
 select table_privs_are(
-  'authenticated',
   'public',
   'profiles',
+  'authenticated',
   array['SELECT'],
   'authenticated has table-level select only; profile edits use column grants'
 );

@@ -20,8 +20,8 @@
 
 ## Fase 2 — Onboarding
 
-- [ ] Profissão;
-- [ ] Negócio;
+- [x] Profissão;
+- [x] Negócio e privacidade da localização;
 - [ ] Serviços;
 - [ ] Disponibilidade;
 - [ ] Regras;
