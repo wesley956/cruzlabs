@@ -25,12 +25,12 @@
 - [x] Serviços, sugestões, preço e duração;
 - [x] Disponibilidade semanal e múltiplos períodos;
 - [x] Regras de agendamento;
-- [ ] Slug e publicação;
-- [ ] Início do teste gratuito.
+- [x] Slug, prévia e publicação;
+- [x] Início transacional do teste gratuito.
 
 ## Fase 3 — Agendamento público
 
-- [ ] Página pública;
+- [x] Página pública inicial;
 - [ ] Motor de disponibilidade;
 - [ ] Clientes;
 - [ ] Criação transacional;

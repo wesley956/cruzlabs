@@ -1,11 +1,51 @@
-import Link from "next/link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { createSupabaseServerClient } from "@cruz-agenda/supabase/server";
+import { normalizePublicSlug } from "@cruz-agenda/validation";
+import { PublicLinkForm } from "@/features/onboarding/public-link-form";
 
 export const metadata = { title: "Crie o link da sua agenda" };
+export const dynamic = "force-dynamic";
 
-export default function PublicLinkOnboardingPage() {
+export default async function PublicLinkOnboardingPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/entrar?next=/configuracao/link");
+  }
+
+  const [{ data: profile }, { data: business }, { data: settings }] = await Promise.all([
+    supabase.from("profiles").select("onboarding_completed").single(),
+    supabase.from("businesses").select("id, business_name, slug").maybeSingle(),
+    supabase.from("booking_settings").select("id").maybeSingle(),
+  ]);
+
+  if (profile?.onboarding_completed) {
+    redirect("/painel");
+  }
+
+  if (!business) {
+    redirect("/configuracao/profissao");
+  }
+
+  if (!settings) {
+    redirect("/configuracao/regras");
+  }
+
+  const requestHeaders = await headers();
+  const forwardedHost = requestHeaders.get("x-forwarded-host");
+  const host = forwardedHost ?? requestHeaders.get("host");
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
+  const configuredBaseUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "");
+  const baseUrl = configuredBaseUrl ?? (host ? `${protocol}://${host}` : "");
+  const suggestedSlug = normalizePublicSlug(business.business_name ?? "minha-agenda");
+
   return (
     <main className="min-h-screen px-5 py-8">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--sage)]">
           Configuração da sua agenda
         </p>
@@ -13,31 +53,19 @@ export default function PublicLinkOnboardingPage() {
           <div className="h-full w-full rounded-full bg-[var(--sage)]" />
         </div>
         <p className="mt-2 text-sm text-[var(--foreground-muted)]">Etapa 6 de 6</p>
+        <h1 className="mt-10 text-5xl font-semibold tracking-tight">
+          Escolha o link da sua agenda
+        </h1>
+        <p className="mt-4 max-w-3xl text-lg leading-8 text-[var(--foreground-muted)]">
+          Este será o endereço compartilhado no WhatsApp, Instagram e cartão digital para suas
+          clientes acessarem sua página.
+        </p>
 
-        <section className="mt-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] p-7 shadow-xl shadow-[#ded8ce] sm:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
-            Última etapa
-          </p>
-          <h1 className="mt-4 text-5xl font-semibold tracking-tight">
-            Escolha o link da sua agenda
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-[var(--foreground-muted)]">
-            Suas regras foram salvas. A próxima implementação permitirá escolher um endereço único,
-            visualizar a página pública e publicar a agenda com o início seguro dos 15 dias grátis.
-          </p>
-
-          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-            <Link
-              href="/configuracao/regras"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] px-6 font-semibold hover:bg-[var(--surface-soft)]"
-            >
-              Voltar
-            </Link>
-            <span className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--sage-soft)] px-6 font-semibold text-[var(--sage)]">
-              Regras salvas com segurança
-            </span>
-          </div>
-        </section>
+        <PublicLinkForm
+          initialSlug={business.slug ?? ""}
+          suggestedSlug={suggestedSlug}
+          baseUrl={baseUrl}
+        />
       </div>
     </main>
   );
