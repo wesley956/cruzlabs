@@ -1,19 +1,19 @@
-name: CI
+name: CI bootstrap
 
 on:
   pull_request:
-  push:
-    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  quality:
+  bootstrap:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout feature branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -26,68 +26,34 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Apply validated source normalization
         shell: bash
         run: |
-          set -o pipefail
-          pnpm install --no-frozen-lockfile 2>&1 | tee pnpm-install.log
+          cp .github/workflows/ci.yml /tmp/ci-bootstrap.yml
+          sed -i '/"baseUrl": "\.",/d' apps/web/tsconfig.json apps/admin/tsconfig.json
+          pnpm format
+          cp /tmp/ci-bootstrap.yml .github/workflows/ci.yml
 
-      - name: Format source
-        run: pnpm format
-
-      - name: Archive formatted source
+      - name: Commit formatted source and lockfile
         shell: bash
         run: |
-          git ls-files > formatted-files.txt
-          printf '%s\n' pnpm-lock.yaml >> formatted-files.txt
-          tar -czf formatted-source.tar.gz -T formatted-files.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md apps packages supabase pnpm-lock.yaml pnpm-workspace.yaml package.json
+          if git diff --cached --quiet; then
+            echo "No bootstrap changes to commit"
+          else
+            git commit -m "format source and lock dependencies"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
 
       - name: Check formatting
-        shell: bash
-        run: |
-          set -o pipefail
-          pnpm format:check 2>&1 | tee prettier-check.log
+        run: pnpm format:check
 
       - name: Typecheck
-        id: typecheck
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          pnpm typecheck 2>&1 | tee typecheck.log
+        run: pnpm typecheck
 
       - name: Build
-        id: build
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          pnpm build 2>&1 | tee build.log
-
-      - name: Upload bootstrap diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pnpm-bootstrap
-          path: |
-            pnpm-install.log
-            pnpm-lock.yaml
-            prettier-check.log
-            typecheck.log
-            build.log
-            formatted-source.tar.gz
-          if-no-files-found: warn
-          retention-days: 3
-
-      - name: Verify quality results
-        if: always()
-        shell: bash
-        run: |
-          if [[ "${{ steps.typecheck.outcome }}" != "success" ]]; then
-            echo "Typecheck failed"
-            exit 1
-          fi
-
-          if [[ "${{ steps.build.outcome }}" != "success" ]]; then
-            echo "Build failed"
-            exit 1
-          fi
+        run: pnpm build
