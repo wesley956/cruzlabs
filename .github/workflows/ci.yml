@@ -31,12 +31,14 @@ jobs:
           set -o pipefail
           pnpm install --no-frozen-lockfile 2>&1 | tee pnpm-install.log
 
-      - name: Upload pnpm install log
+      - name: Upload bootstrap files
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pnpm-install-log
-          path: pnpm-install.log
+          name: pnpm-bootstrap
+          path: |
+            pnpm-install.log
+            pnpm-lock.yaml
           if-no-files-found: error
           retention-days: 3
 
