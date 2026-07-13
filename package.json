@@ -14,9 +14,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
-  },
   "devDependencies": {
     "prettier": "^3.0.0",
     "turbo": "^2.0.0",
