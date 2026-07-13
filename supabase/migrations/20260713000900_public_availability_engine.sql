@@ -30,13 +30,7 @@ create table public.appointments (
   buffer_after_minutes integer not null default 0 check (
     buffer_after_minutes between 0 and 240
   ),
-  occupied_range tstzrange generated always as (
-    tstzrange(
-      starts_at,
-      ends_at + make_interval(mins => buffer_after_minutes),
-      '[)'
-    )
-  ) stored,
+  occupied_range tstzrange not null,
   status text not null default 'confirmed' check (
     status in ('pending', 'confirmed', 'completed', 'canceled', 'no_show')
   ),
@@ -61,12 +55,34 @@ create table public.appointments (
   ) where (status in ('pending', 'confirmed'))
 );
 
+create or replace function public.set_appointment_occupied_range()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+  new.occupied_range := tstzrange(
+    new.starts_at,
+    new.ends_at + make_interval(mins => new.buffer_after_minutes),
+    '[)'
+  );
+
+  return new;
+end;
+$$;
+
 create index appointments_business_starts_at_idx
   on public.appointments(business_id, starts_at);
 create index appointments_business_status_starts_at_idx
   on public.appointments(business_id, status, starts_at);
 create index appointments_service_id_idx
   on public.appointments(service_id);
+
+create trigger appointments_set_occupied_range
+before insert or update of starts_at, ends_at, buffer_after_minutes
+on public.appointments
+for each row execute function public.set_appointment_occupied_range();
 
 create trigger appointments_set_updated_at
 before update on public.appointments
@@ -291,6 +307,7 @@ begin
 end;
 $$;
 
+revoke all on function public.set_appointment_occupied_range() from public, anon, authenticated;
 revoke all on function public.get_public_availability(text, uuid, date, integer) from public;
 grant execute on function public.get_public_availability(text, uuid, date, integer)
   to anon, authenticated;
