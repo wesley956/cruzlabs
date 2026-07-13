@@ -118,9 +118,7 @@ export function AvailabilityForm({
   );
 
   function updateDay(weekday: number, updater: (day: DayConfiguration) => DayConfiguration) {
-    setDays((current) =>
-      current.map((day) => (day.weekday === weekday ? updater(day) : day)),
-    );
+    setDays((current) => current.map((day) => (day.weekday === weekday ? updater(day) : day)));
   }
 
   function toggleDay(weekday: number, enabled: boolean) {
@@ -137,18 +135,11 @@ export function AvailabilityForm({
   function addPeriod(weekday: number) {
     updateDay(weekday, (day) => ({
       ...day,
-      periods: [
-        ...day.periods,
-        { clientId: newClientId(), startTime: "13:00", endTime: "18:00" },
-      ],
+      periods: [...day.periods, { clientId: newClientId(), startTime: "13:00", endTime: "18:00" }],
     }));
   }
 
-  function updatePeriod(
-    weekday: number,
-    clientId: string,
-    changes: Partial<EditablePeriod>,
-  ) {
+  function updatePeriod(weekday: number, clientId: string, changes: Partial<EditablePeriod>) {
     updateDay(weekday, (day) => ({
       ...day,
       periods: day.periods.map((period) =>

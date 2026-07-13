@@ -62,9 +62,7 @@ export default async function AvailabilityOnboardingPage() {
           <div className="h-full w-4/6 rounded-full bg-[var(--sage)]" />
         </div>
         <p className="mt-2 text-sm text-[var(--foreground-muted)]">Etapa 4 de 6</p>
-        <h1 className="mt-10 text-5xl font-semibold tracking-tight">
-          Defina seus dias e horários
-        </h1>
+        <h1 className="mt-10 text-5xl font-semibold tracking-tight">Defina seus dias e horários</h1>
         <p className="mt-4 max-w-3xl text-lg leading-8 text-[var(--foreground-muted)]">
           Informe quando você normalmente atende. Folgas, férias e horários especiais poderão ser
           adicionados depois sem alterar esta rotina semanal.
