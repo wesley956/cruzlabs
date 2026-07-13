@@ -15,9 +15,9 @@ select policies_are(
   'profiles has the expected RLS policies'
 );
 select table_privs_are(
-  'authenticated',
   'public',
   'profiles',
+  'authenticated',
   array['SELECT'],
   'authenticated has table-level select only; profile edits use column grants'
 );
