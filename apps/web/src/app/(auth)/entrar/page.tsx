@@ -1,8 +1,25 @@
 import Link from "next/link";
+import { LoginForm } from "@/features/auth/auth-forms";
 
 export const metadata = { title: "Entrar" };
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{
+    next?: string;
+    senha?: string;
+    erro?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = await searchParams;
+  const notice =
+    params.senha === "alterada"
+      ? "Sua senha foi atualizada. Entre novamente para acessar sua agenda."
+      : params.erro === "callback"
+        ? "Não foi possível validar o link. Tente entrar ou solicite um novo e-mail."
+        : undefined;
+
   return (
     <div>
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--sage)]">
@@ -12,37 +29,9 @@ export default function LoginPage() {
       <p className="mt-3 leading-7 text-[var(--foreground-muted)]">
         Acesse sua agenda e acompanhe seus próximos atendimentos.
       </p>
-      <form className="mt-8 space-y-5">
-        <label className="block">
-          <span className="mb-2 block text-sm font-semibold">E-mail</span>
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="seuemail@exemplo.com"
-            className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 outline-none focus:border-[var(--gold)] focus:ring-3 focus:ring-[var(--gold-soft)]"
-          />
-        </label>
-        <label className="block">
-          <span className="mb-2 block text-sm font-semibold">Senha</span>
-          <input
-            type="password"
-            autoComplete="current-password"
-            placeholder="Digite sua senha"
-            className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 outline-none focus:border-[var(--gold)] focus:ring-3 focus:ring-[var(--gold-soft)]"
-          />
-        </label>
-        <div className="text-right">
-          <Link href="/esqueci-minha-senha" className="text-sm font-semibold text-[var(--sage)]">
-            Esqueci minha senha
-          </Link>
-        </div>
-        <button
-          type="submit"
-          className="min-h-12 w-full rounded-xl bg-[var(--brand)] px-5 font-semibold text-[var(--surface)] hover:bg-[var(--brand-strong)]"
-        >
-          Entrar
-        </button>
-      </form>
+
+      <LoginForm nextPath={params.next} notice={notice} />
+
       <p className="mt-7 text-center text-sm text-[var(--foreground-muted)]">
         Ainda não tem uma conta?{" "}
         <Link href="/criar-conta" className="font-semibold text-[var(--sage)]">
