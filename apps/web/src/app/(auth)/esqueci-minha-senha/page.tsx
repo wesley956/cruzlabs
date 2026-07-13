@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ForgotPasswordForm } from "@/features/auth/auth-forms";
 
 export const metadata = { title: "Recuperar senha" };
 
@@ -13,23 +14,9 @@ export default function ForgotPasswordPage() {
         Informe o e-mail usado no cadastro. Enviaremos um link seguro para você criar uma nova
         senha.
       </p>
-      <form className="mt-8 space-y-5">
-        <label className="block">
-          <span className="mb-2 block text-sm font-semibold">E-mail</span>
-          <input
-            type="email"
-            autoComplete="email"
-            placeholder="seuemail@exemplo.com"
-            className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 outline-none focus:border-[var(--gold)] focus:ring-3 focus:ring-[var(--gold-soft)]"
-          />
-        </label>
-        <button
-          type="submit"
-          className="min-h-12 w-full rounded-xl bg-[var(--brand)] px-5 font-semibold text-[var(--surface)] hover:bg-[var(--brand-strong)]"
-        >
-          Enviar link de recuperação
-        </button>
-      </form>
+
+      <ForgotPasswordForm />
+
       <p className="mt-7 text-center">
         <Link href="/entrar" className="text-sm font-semibold text-[var(--sage)]">
           Voltar para entrar
