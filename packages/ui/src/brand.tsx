@@ -7,16 +7,17 @@ type BrandProps = HTMLAttributes<HTMLSpanElement> & {
 export function Brand({ compact = false, className = "", ...props }: BrandProps) {
   return (
     <span
-      className={`inline-flex items-center gap-2 font-semibold tracking-tight ${className}`}
+      className={`inline-flex items-center gap-3 font-semibold tracking-tight ${className}`}
       {...props}
     >
       <span
         aria-hidden="true"
-        className="grid size-9 place-items-center rounded-xl bg-[var(--brand)] text-lg font-bold text-white shadow-sm"
+        className="relative grid size-10 place-items-center rounded-full border border-[var(--gold)] bg-[var(--surface)] font-display text-xl font-semibold text-[var(--foreground)] shadow-sm"
       >
         C
+        <span className="absolute -bottom-0.5 size-1.5 rounded-full bg-[var(--sage)]" />
       </span>
-      {!compact && <span>Cruz Agenda</span>}
+      {!compact && <span className="font-display text-xl">Cruz Agenda</span>}
     </span>
   );
 }
