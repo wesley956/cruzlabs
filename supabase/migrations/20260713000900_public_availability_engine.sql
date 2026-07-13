@@ -120,7 +120,7 @@ declare
   service_duration_minutes integer;
   minimum_notice_minutes integer;
   booking_window_days integer;
-  buffer_after_minutes integer;
+  selected_buffer_after_minutes integer;
   local_now timestamp without time zone;
   effective_start_date date;
   effective_end_date date;
@@ -158,7 +158,7 @@ begin
     service_duration_minutes,
     minimum_notice_minutes,
     booking_window_days,
-    buffer_after_minutes
+    selected_buffer_after_minutes
   from public.businesses business
   join public.subscriptions subscription
     on subscription.business_id = business.id
@@ -276,7 +276,7 @@ begin
             and appointment.occupied_range && tstzrange(
               slot_series.generated_start,
               slot_series.generated_start + make_interval(
-                mins => service_duration_minutes + buffer_after_minutes
+                mins => service_duration_minutes + selected_buffer_after_minutes
               ),
               '[)'
             )
