@@ -1,4 +1,5 @@
 export * from "./auth";
+export * from "./onboarding";
 
 const SLUG_PATTERN = /^(?!-)(?!.*--)[a-z0-9]+(?:-[a-z0-9]+)*(?<!-)$/;
 
