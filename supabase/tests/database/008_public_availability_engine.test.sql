@@ -325,13 +325,13 @@ select is(
   9,
   'canceled appointments do not block availability'
 );
-select is_null(
+select ok(
   public.get_public_availability(
     'agenda-teste-disponibilidade',
     '30000000-0000-4000-8000-000000000099',
     current_date + 7,
     1
-  ),
+  ) is null,
   'a service outside the published business returns no availability'
 );
 select is(
