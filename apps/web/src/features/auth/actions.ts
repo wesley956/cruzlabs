@@ -133,10 +133,7 @@ export async function loginAction(
     };
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("onboarding_completed")
-    .single();
+  const { data: profile } = await supabase.from("profiles").select("onboarding_completed").single();
 
   if (!profile?.onboarding_completed) {
     redirect("/boas-vindas");

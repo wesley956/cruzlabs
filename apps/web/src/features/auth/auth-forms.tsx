@@ -16,13 +16,7 @@ const INITIAL_STATE: AuthActionState = { status: "idle" };
 const INPUT_CLASS =
   "min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 outline-none transition focus:border-[var(--gold)] focus:ring-3 focus:ring-[var(--gold-soft)] aria-[invalid=true]:border-[var(--danger)]";
 
-type FieldName =
-  | "fullName"
-  | "email"
-  | "whatsapp"
-  | "password"
-  | "passwordConfirmation"
-  | "terms";
+type FieldName = "fullName" | "email" | "whatsapp" | "password" | "passwordConfirmation" | "terms";
 
 function FieldError({ state, field }: { state: AuthActionState; field: FieldName }) {
   const error = state.fieldErrors?.[field];

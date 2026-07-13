@@ -43,12 +43,10 @@ export default async function DashboardPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--sage)]">
             Área protegida
           </p>
-          <h1 className="mt-4 text-5xl font-semibold tracking-tight">
-            Olá, {profile.full_name}
-          </h1>
+          <h1 className="mt-4 text-5xl font-semibold tracking-tight">Olá, {profile.full_name}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--foreground-muted)]">
-            Sua sessão está funcionando corretamente. Os próximos módulos transformarão esta tela
-            no painel completo da sua agenda.
+            Sua sessão está funcionando corretamente. Os próximos módulos transformarão esta tela no
+            painel completo da sua agenda.
           </p>
         </section>
       </div>

@@ -44,9 +44,7 @@ export async function updateSupabaseSession(
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
-  const isProtected = options.protectedPrefixes?.some((prefix) =>
-    matchesPrefix(pathname, prefix),
-  );
+  const isProtected = options.protectedPrefixes?.some((prefix) => matchesPrefix(pathname, prefix));
 
   if (isProtected && !user) {
     const loginUrl = request.nextUrl.clone();

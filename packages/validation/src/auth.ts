@@ -18,15 +18,7 @@ export type PasswordResetInput = {
 };
 
 export type AuthFieldErrors = Partial<
-  Record<
-    | "fullName"
-    | "email"
-    | "whatsapp"
-    | "password"
-    | "passwordConfirmation"
-    | "terms",
-    string
-  >
+  Record<"fullName" | "email" | "whatsapp" | "password" | "passwordConfirmation" | "terms", string>
 >;
 
 type ValidationSuccess<T> = {
