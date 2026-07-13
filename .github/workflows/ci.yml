@@ -1,4 +1,4 @@
-name: CI availability engine bootstrap
+name: CI availability engine diagnostics
 
 on:
   pull_request:
@@ -67,7 +67,24 @@ jobs:
           version: 2.84.2
 
       - name: Start local database and apply migrations
-        run: supabase db start
+        shell: bash
+        run: |
+          set -o pipefail
+          supabase db start 2>&1 | tee supabase-db-start.log
 
       - name: Run pgTAP database tests
-        run: supabase test db
+        shell: bash
+        run: |
+          set -o pipefail
+          supabase test db 2>&1 | tee supabase-test-db.log
+
+      - name: Upload database diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: availability-database-diagnostics
+          path: |
+            supabase-db-start.log
+            supabase-test-db.log
+          if-no-files-found: warn
+          retention-days: 3
