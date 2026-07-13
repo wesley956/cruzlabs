@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@cruz-agenda/supabase/server";
 import {
   validateBusinessInput,
+  validateOnboardingServices,
   validateProfessionInput,
   type OnboardingFieldErrors,
 } from "@cruz-agenda/validation";
@@ -31,7 +32,19 @@ function mapOnboardingError(message: string): string {
   }
 
   if (normalized.includes("business_not_initialized")) {
-    return "Escolha sua profissão antes de informar os dados do negócio.";
+    return "Escolha sua profissão e informe os dados do negócio antes de continuar.";
+  }
+
+  if (normalized.includes("invalid_service_template")) {
+    return "Uma das sugestões de serviço não pertence à profissão selecionada.";
+  }
+
+  if (normalized.includes("services_business_active_name_unique")) {
+    return "Existem serviços com o mesmo nome. Use um nome diferente para cada serviço.";
+  }
+
+  if (normalized.includes("onboarding_already_completed")) {
+    return "O onboarding já foi concluído. Edite os serviços pela área de Serviços.";
   }
 
   return "Não foi possível salvar esta etapa. Revise os dados e tente novamente.";
@@ -157,4 +170,58 @@ export async function saveBusinessAction(
   }
 
   redirect("/configuracao/servicos");
+}
+
+export async function saveServicesAction(
+  _previousState: OnboardingActionState,
+  formData: FormData,
+): Promise<OnboardingActionState> {
+  let parsedServices: unknown;
+
+  try {
+    parsedServices = JSON.parse(getFormString(formData, "services"));
+  } catch {
+    return {
+      status: "error",
+      message: "Não foi possível interpretar a lista de serviços. Atualize a página e tente novamente.",
+    };
+  }
+
+  const validation = validateOnboardingServices(parsedServices);
+
+  if (!validation.success) {
+    return { status: "error", message: validation.message };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      status: "error",
+      message: "Sua sessão expirou. Entre novamente para continuar.",
+    };
+  }
+
+  const payload = validation.data.map((service) => ({
+    template_id: service.templateId,
+    name: service.name,
+    description: service.description || null,
+    duration_minutes: service.durationMinutes,
+    price_cents: service.priceCents,
+    show_price: service.showPrice,
+    online_booking_enabled: service.onlineBookingEnabled,
+  }));
+
+  const { error } = await supabase.rpc("save_onboarding_services", {
+    selected_services: payload,
+  });
+
+  if (error) {
+    return { status: "error", message: mapOnboardingError(error.message) };
+  }
+
+  redirect("/configuracao/disponibilidade");
 }
