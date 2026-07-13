@@ -23,7 +23,7 @@
 - [x] Profissão;
 - [x] Negócio e privacidade da localização;
 - [x] Serviços, sugestões, preço e duração;
-- [ ] Disponibilidade;
+- [x] Disponibilidade semanal e múltiplos períodos;
 - [ ] Regras;
 - [ ] Slug e publicação;
 - [ ] Início do teste gratuito.
