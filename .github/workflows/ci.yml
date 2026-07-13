@@ -26,7 +26,19 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        shell: bash
+        run: |
+          set -o pipefail
+          pnpm install --no-frozen-lockfile 2>&1 | tee pnpm-install.log
+
+      - name: Upload pnpm install log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnpm-install-log
+          path: pnpm-install.log
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Check formatting
         run: pnpm format:check
