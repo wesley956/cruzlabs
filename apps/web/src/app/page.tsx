@@ -57,8 +57,8 @@ export default function HomePage() {
               Suas clientes agendam sozinhas. Você preserva seu tempo.
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-[var(--foreground-muted)] sm:text-xl">
-              Crie sua agenda online, compartilhe seu link e conduza seus atendimentos com
-              mais serenidade, organização e presença.
+              Crie sua agenda online, compartilhe seu link e conduza seus atendimentos com mais
+              serenidade, organização e presença.
             </p>
             <p className="mt-4 font-display text-2xl italic text-[var(--sage)]">
               Elegância que acolhe. Simplicidade que eleva.
@@ -144,9 +144,17 @@ export default function HomePage() {
           />
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {[
-              ["01", "Configure sua agenda", "Cadastre serviços, preços e seus horários de atendimento."],
+              [
+                "01",
+                "Configure sua agenda",
+                "Cadastre serviços, preços e seus horários de atendimento.",
+              ],
               ["02", "Compartilhe seu link", "Envie pelo WhatsApp ou coloque na bio do Instagram."],
-              ["03", "Receba agendamentos", "A cliente escolhe o melhor horário e ele aparece no seu painel."],
+              [
+                "03",
+                "Receba agendamentos",
+                "A cliente escolhe o melhor horário e ele aparece no seu painel.",
+              ],
             ].map(([number, title, text]) => (
               <article
                 key={number}

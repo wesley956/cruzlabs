@@ -20,20 +20,17 @@ export default function WelcomePage() {
             compartilhado com as clientes.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {[
-              "Sua profissão",
-              "Seus serviços",
-              "Dias e horários",
-              "Seu link público",
-            ].map((item, index) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 font-semibold"
-              >
-                <span className="mr-2 text-[var(--gold)]">{index + 1}.</span>
-                {item}
-              </div>
-            ))}
+            {["Sua profissão", "Seus serviços", "Dias e horários", "Seu link público"].map(
+              (item, index) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 font-semibold"
+                >
+                  <span className="mr-2 text-[var(--gold)]">{index + 1}.</span>
+                  {item}
+                </div>
+              ),
+            )}
           </div>
           <div className="mt-8 rounded-2xl bg-[var(--sage-soft)] p-5 text-[var(--foreground)]">
             <strong>Seus 15 dias grátis ainda não começaram.</strong>

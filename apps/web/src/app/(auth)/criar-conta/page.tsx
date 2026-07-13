@@ -52,8 +52,8 @@ export default function SignUpPage() {
         </button>
       </form>
       <p className="mt-4 text-center text-xs leading-5 text-[var(--foreground-muted)]">
-        Seus 15 dias grátis começam somente depois que sua agenda estiver configurada. Nenhum
-        cartão será solicitado agora.
+        Seus 15 dias grátis começam somente depois que sua agenda estiver configurada. Nenhum cartão
+        será solicitado agora.
       </p>
       <p className="mt-6 text-center text-sm text-[var(--foreground-muted)]">
         Já tem uma conta?{" "}

@@ -27,10 +27,10 @@ A fundação técnica do projeto está iniciada:
 
 ## Aplicações
 
-| Aplicação | Diretório | Porta local |
-|---|---|---:|
-| Cruz Agenda | `apps/web` | 3000 |
-| Cruz Agenda Admin | `apps/admin` | 3001 |
+| Aplicação         | Diretório    | Porta local |
+| ----------------- | ------------ | ----------: |
+| Cruz Agenda       | `apps/web`   |        3000 |
+| Cruz Agenda Admin | `apps/admin` |        3001 |
 
 ## Pré-requisitos
 
