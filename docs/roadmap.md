@@ -22,7 +22,7 @@
 
 - [x] Profissão;
 - [x] Negócio e privacidade da localização;
-- [ ] Serviços;
+- [x] Serviços, sugestões, preço e duração;
 - [ ] Disponibilidade;
 - [ ] Regras;
 - [ ] Slug e publicação;
