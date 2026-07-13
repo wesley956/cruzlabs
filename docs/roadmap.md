@@ -24,7 +24,7 @@
 - [x] Negócio e privacidade da localização;
 - [x] Serviços, sugestões, preço e duração;
 - [x] Disponibilidade semanal e múltiplos períodos;
-- [ ] Regras;
+- [x] Regras de agendamento;
 - [ ] Slug e publicação;
 - [ ] Início do teste gratuito.
 
