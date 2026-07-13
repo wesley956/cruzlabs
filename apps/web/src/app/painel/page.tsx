@@ -94,8 +94,8 @@ export default async function DashboardPage({
           </p>
           <h1 className="mt-4 text-5xl font-semibold tracking-tight">Olá, {profile.full_name}</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--foreground-muted)]">
-            Sua conta, negócio, serviços, horários e regras já estão configurados. Os próximos módulos
-            transformarão esta tela no painel operacional completo da sua agenda.
+            Sua conta, negócio, serviços, horários e regras já estão configurados. Os próximos
+            módulos transformarão esta tela no painel operacional completo da sua agenda.
           </p>
         </section>
 
@@ -104,7 +104,9 @@ export default async function DashboardPage({
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
               Página pública
             </p>
-            <h2 className="mt-2 text-3xl font-semibold">{business?.business_name ?? "Sua agenda"}</h2>
+            <h2 className="mt-2 text-3xl font-semibold">
+              {business?.business_name ?? "Sua agenda"}
+            </h2>
             {business?.slug ? (
               <>
                 <p className="mt-3 break-all rounded-xl bg-[var(--surface-soft)] px-4 py-3 font-semibold">

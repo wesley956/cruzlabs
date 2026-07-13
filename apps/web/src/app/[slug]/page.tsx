@@ -80,11 +80,7 @@ function parsePublicBusinessPage(value: unknown): PublicBusinessView | null {
   };
 }
 
-export default async function PublicSlugPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function PublicSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc("get_public_business_page", {

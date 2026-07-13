@@ -121,7 +121,9 @@ export function PublicBusinessPage({
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
                 Serviços
               </p>
-              <h2 className="mt-2 text-4xl font-semibold tracking-tight">Escolha seu atendimento</h2>
+              <h2 className="mt-2 text-4xl font-semibold tracking-tight">
+                Escolha seu atendimento
+              </h2>
             </div>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">

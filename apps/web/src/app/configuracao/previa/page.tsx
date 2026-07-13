@@ -24,13 +24,7 @@ function buildLocationText(business: {
   const cityState = [business.city, business.state].filter(Boolean).join(" - ");
 
   if (business.address_visibility === "full") {
-    return [
-      business.street,
-      business.number,
-      business.complement,
-      business.neighborhood,
-      cityState,
-    ]
+    return [business.street, business.number, business.complement, business.neighborhood, cityState]
       .filter(Boolean)
       .join(", ");
   }

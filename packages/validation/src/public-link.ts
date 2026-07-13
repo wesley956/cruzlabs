@@ -8,9 +8,7 @@ export type PublicLinkValidationFailure = {
   message: string;
 };
 
-export type PublicLinkValidationResult =
-  | PublicLinkValidationSuccess
-  | PublicLinkValidationFailure;
+export type PublicLinkValidationResult = PublicLinkValidationSuccess | PublicLinkValidationFailure;
 
 const PUBLIC_SLUG_PATTERN = /^(?!-)(?!.*--)[a-z0-9]+(?:-[a-z0-9]+)*(?<!-)$/;
 

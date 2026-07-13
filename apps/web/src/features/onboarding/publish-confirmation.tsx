@@ -27,7 +27,10 @@ export function PublishConfirmation({ slug }: { slug: string }) {
   const [confirmed, setConfirmed] = useState(false);
 
   return (
-    <form action={formAction} className="rounded-[2rem] border border-[var(--gold)] bg-[var(--gold-soft)] p-6 sm:p-8">
+    <form
+      action={formAction}
+      className="rounded-[2rem] border border-[var(--gold)] bg-[var(--gold-soft)] p-6 sm:p-8"
+    >
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold-strong)]">
         Publicação final
       </p>
