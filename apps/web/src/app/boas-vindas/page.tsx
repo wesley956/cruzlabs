@@ -47,7 +47,9 @@ export default async function WelcomePage() {
             {hasStarted ? "Continue de onde parou" : "Bem-vinda"}
           </p>
           <h1 className="mt-4 text-5xl font-semibold tracking-tight">
-            {profile?.full_name ? `${profile.full_name}, vamos preparar sua agenda?` : "Vamos preparar sua agenda com simplicidade?"}
+            {profile?.full_name
+              ? `${profile.full_name}, vamos preparar sua agenda?`
+              : "Vamos preparar sua agenda com simplicidade?"}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--foreground-muted)]">
             Em poucos passos você cadastrará sua profissão, serviços, horários e o link que será

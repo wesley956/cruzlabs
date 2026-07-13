@@ -1,9 +1,6 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@cruz-agenda/supabase/server";
-import {
-  BusinessForm,
-  type BusinessDefaults,
-} from "@/features/onboarding/onboarding-forms";
+import { BusinessForm, type BusinessDefaults } from "@/features/onboarding/onboarding-forms";
 
 export const metadata = { title: "Informações do negócio" };
 export const dynamic = "force-dynamic";

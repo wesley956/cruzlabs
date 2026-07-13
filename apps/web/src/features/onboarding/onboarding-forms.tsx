@@ -2,11 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import {
-  saveBusinessAction,
-  saveProfessionAction,
-  type OnboardingActionState,
-} from "./actions";
+import { saveBusinessAction, saveProfessionAction, type OnboardingActionState } from "./actions";
 
 const INITIAL_STATE: OnboardingActionState = { status: "idle" };
 const INPUT_CLASS =
@@ -67,7 +63,13 @@ const BRAZIL_STATES = [
   ["TO", "Tocantins"],
 ] as const;
 
-function FieldError({ state, field }: { state: OnboardingActionState; field: OnboardingFieldName }) {
+function FieldError({
+  state,
+  field,
+}: {
+  state: OnboardingActionState;
+  field: OnboardingFieldName;
+}) {
   const error = state.fieldErrors?.[field];
 
   if (!error) {
@@ -169,7 +171,9 @@ export function ProfessionForm({
             defaultValue={initialCustomProfession}
             placeholder="Ex.: Massoterapeuta"
             aria-invalid={Boolean(state.fieldErrors?.customProfession)}
-            aria-describedby={state.fieldErrors?.customProfession ? "customProfession-error" : undefined}
+            aria-describedby={
+              state.fieldErrors?.customProfession ? "customProfession-error" : undefined
+            }
             className={INPUT_CLASS}
           />
           <FieldError state={state} field="customProfession" />
@@ -200,7 +204,9 @@ export function BusinessForm({ defaults }: { defaults: BusinessDefaults }) {
         </div>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-semibold">Nome do negócio ou nome profissional</span>
+          <span className="mb-2 block text-sm font-semibold">
+            Nome do negócio ou nome profissional
+          </span>
           <input
             name="businessName"
             type="text"
@@ -471,9 +477,7 @@ export function BusinessForm({ defaults }: { defaults: BusinessDefaults }) {
           </div>
         )}
 
-        {addressVisibility !== "full" && (
-          <input type="hidden" name="street" value="" />
-        )}
+        {addressVisibility !== "full" && <input type="hidden" name="street" value="" />}
         {addressVisibility !== "full" && <input type="hidden" name="number" value="" />}
         {addressVisibility !== "full" && <input type="hidden" name="complement" value="" />}
         {addressVisibility !== "full" && addressVisibility !== "neighborhood_city" && (

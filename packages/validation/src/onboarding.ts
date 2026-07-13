@@ -9,12 +9,7 @@ export const SERVICE_LOCATION_TYPES = [
 
 export type ServiceLocationType = (typeof SERVICE_LOCATION_TYPES)[number];
 
-export const ADDRESS_VISIBILITIES = [
-  "full",
-  "neighborhood_city",
-  "city",
-  "hidden",
-] as const;
+export const ADDRESS_VISIBILITIES = ["full", "neighborhood_city", "city", "hidden"] as const;
 
 export type AddressVisibility = (typeof ADDRESS_VISIBILITIES)[number];
 
