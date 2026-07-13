@@ -12,10 +12,11 @@
 ## Fase 1 — Autenticação
 
 - [x] Migration inicial de perfis;
-- [ ] Cadastro e confirmação de e-mail;
-- [ ] Login e recuperação de senha;
-- [ ] Aceite de termos;
-- [ ] Testes completos de RLS.
+- [x] Cadastro e confirmação de e-mail;
+- [x] Login e recuperação de senha;
+- [x] Aceite versionado de termos e privacidade;
+- [x] Proteção de rotas e redirecionamentos internos;
+- [ ] Testes completos de RLS e autenticação em homologação.
 
 ## Fase 2 — Onboarding
 
