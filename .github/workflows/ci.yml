@@ -31,6 +31,16 @@ jobs:
           set -o pipefail
           pnpm install --no-frozen-lockfile 2>&1 | tee pnpm-install.log
 
+      - name: Format source
+        run: pnpm format
+
+      - name: Archive formatted source
+        shell: bash
+        run: |
+          git ls-files > formatted-files.txt
+          printf '%s\n' pnpm-lock.yaml >> formatted-files.txt
+          tar -czf formatted-source.tar.gz -T formatted-files.txt
+
       - name: Check formatting
         shell: bash
         run: |
@@ -46,6 +56,7 @@ jobs:
             pnpm-install.log
             pnpm-lock.yaml
             prettier-check.log
+            formatted-source.tar.gz
           if-no-files-found: warn
           retention-days: 3
 
