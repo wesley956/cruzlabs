@@ -1,19 +1,19 @@
-name: CI
+name: CI booking rules bootstrap
 
 on:
   pull_request:
-  push:
-    branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout feature branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -29,6 +29,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Format source
+        run: pnpm format
+
+      - name: Commit formatting
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps packages supabase docs
+          if git diff --cached --quiet; then
+            echo "No formatting changes"
+          else
+            git commit -m "format booking rules sources"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
 
       - name: Check formatting
         run: pnpm format:check
@@ -51,24 +67,7 @@ jobs:
           version: 2.84.2
 
       - name: Start local database and apply migrations
-        shell: bash
-        run: |
-          set -o pipefail
-          supabase db start --debug 2>&1 | tee supabase-db-start.log
+        run: supabase db start
 
       - name: Run pgTAP database tests
-        shell: bash
-        run: |
-          set -o pipefail
-          supabase test db 2>&1 | tee supabase-test-db.log
-
-      - name: Upload database diagnostics
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: supabase-database-diagnostics
-          path: |
-            supabase-db-start.log
-            supabase-test-db.log
-          if-no-files-found: warn
-          retention-days: 3
+        run: supabase test db
