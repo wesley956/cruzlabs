@@ -87,8 +87,15 @@ export async function savePublicLinkAction(
 
 export async function publishBusinessAction(
   _previousState: OnboardingActionState,
-  _formData: FormData,
+  formData: FormData,
 ): Promise<OnboardingActionState> {
+  if (formData.get("confirmPublication") !== "on") {
+    return {
+      status: "error",
+      message: "Confirme que deseja publicar e iniciar os 15 dias gratuitos.",
+    };
+  }
+
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
