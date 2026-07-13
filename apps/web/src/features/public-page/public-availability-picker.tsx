@@ -93,7 +93,12 @@ function parseAvailabilityResponse(value: unknown): PublicAvailabilityResponse |
       const startsAt = readString(slot, "starts_at");
       const endsAt = readString(slot, "ends_at");
 
-      if (!startsAt || !endsAt || Number.isNaN(Date.parse(startsAt)) || Number.isNaN(Date.parse(endsAt))) {
+      if (
+        !startsAt ||
+        !endsAt ||
+        Number.isNaN(Date.parse(startsAt)) ||
+        Number.isNaN(Date.parse(endsAt))
+      ) {
         return [];
       }
 
@@ -215,7 +220,9 @@ export function PublicAvailabilityPicker({
         });
         setLoadState("success");
       } catch (error) {
-        setMessage(error instanceof Error ? error.message : "Não foi possível consultar os horários.");
+        setMessage(
+          error instanceof Error ? error.message : "Não foi possível consultar os horários.",
+        );
         if (!append) {
           setLoadState("error");
         }
@@ -238,8 +245,8 @@ export function PublicAvailabilityPicker({
   const lastLoadedDate = availability?.days.at(-1)?.date ?? null;
   const canLoadMore = Boolean(
     lastLoadedDate &&
-      availability?.bookingWindowEndsOn &&
-      lastLoadedDate < availability.bookingWindowEndsOn,
+    availability?.bookingWindowEndsOn &&
+    lastLoadedDate < availability.bookingWindowEndsOn,
   );
 
   const selectedService = services.find((service) => service.id === selectedServiceId) ?? null;

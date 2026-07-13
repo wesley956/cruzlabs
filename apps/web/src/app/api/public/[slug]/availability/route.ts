@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@cruz-agenda/supabase/server";
-import {
-  isValidPublicSlug,
-  validatePublicAvailabilityQuery,
-} from "@cruz-agenda/validation";
+import { isValidPublicSlug, validatePublicAvailabilityQuery } from "@cruz-agenda/validation";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const normalizedSlug = slug.trim().toLowerCase();
 
