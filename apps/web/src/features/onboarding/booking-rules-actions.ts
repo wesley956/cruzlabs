@@ -47,9 +47,7 @@ export async function saveBookingRulesAction(
     minimumNoticeMinutes: Number(getFormString(formData, "minimumNoticeMinutes")),
     bookingWindowDays: Number(getFormString(formData, "bookingWindowDays")),
     bufferAfterMinutes: Number(getFormString(formData, "bufferAfterMinutes")),
-    cancellationCutoffMinutes: Number(
-      getFormString(formData, "cancellationCutoffMinutes"),
-    ),
+    cancellationCutoffMinutes: Number(getFormString(formData, "cancellationCutoffMinutes")),
     rescheduleCutoffMinutes: Number(getFormString(formData, "rescheduleCutoffMinutes")),
     autoConfirm: formData.get("autoConfirm") === "on",
   });

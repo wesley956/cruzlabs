@@ -18,8 +18,7 @@ type BookingRulesValidationFailure = {
 };
 
 export type BookingRulesValidationResult =
-  | BookingRulesValidationSuccess
-  | BookingRulesValidationFailure;
+  BookingRulesValidationSuccess | BookingRulesValidationFailure;
 
 function isIntegerInRange(value: unknown, minimum: number, maximum: number): value is number {
   return Number.isInteger(value) && Number(value) >= minimum && Number(value) <= maximum;

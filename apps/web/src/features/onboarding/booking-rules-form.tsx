@@ -68,10 +68,7 @@ const CUTOFF_OPTIONS = [
   [10080, "Até 7 dias antes"],
 ] as const;
 
-function optionLabel(
-  options: ReadonlyArray<readonly [number, string]>,
-  value: number,
-): string {
+function optionLabel(options: ReadonlyArray<readonly [number, string]>, value: number): string {
   return options.find(([optionValue]) => optionValue === value)?.[1] ?? String(value);
 }
 
@@ -91,9 +88,7 @@ function SubmitButton() {
 
 export function BookingRulesForm({ defaults }: { defaults: BookingRulesDefaults }) {
   const [state, formAction] = useActionState(saveBookingRulesAction, INITIAL_STATE);
-  const [minimumNoticeMinutes, setMinimumNoticeMinutes] = useState(
-    defaults.minimumNoticeMinutes,
-  );
+  const [minimumNoticeMinutes, setMinimumNoticeMinutes] = useState(defaults.minimumNoticeMinutes);
   const [bookingWindowDays, setBookingWindowDays] = useState(defaults.bookingWindowDays);
   const [bufferAfterMinutes, setBufferAfterMinutes] = useState(defaults.bufferAfterMinutes);
   const [cancellationCutoffMinutes, setCancellationCutoffMinutes] = useState(
