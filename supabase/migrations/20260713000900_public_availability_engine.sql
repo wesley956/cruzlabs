@@ -50,14 +50,10 @@ create table public.appointments (
   updated_at timestamptz not null default timezone('utc', now()),
   constraint appointments_time_order_check check (starts_at < ends_at),
   constraint appointments_cancellation_state_check check (
-    (status = 'canceled' and canceled_at is not null)
-    or
-    (status <> 'canceled')
+    (status = 'canceled') = (canceled_at is not null)
   ),
   constraint appointments_completion_state_check check (
-    (status = 'completed' and completed_at is not null)
-    or
-    (status <> 'completed')
+    (status = 'completed') = (completed_at is not null)
   ),
   constraint appointments_no_active_overlap exclude using gist (
     business_id with =,
@@ -163,14 +159,14 @@ begin
     and (
       (
         subscription.status = 'trialing'
-        and subscription.trial_ends_at > timezone('utc', now())
+        and subscription.trial_ends_at > now()
       )
       or
       (
         subscription.status = 'active'
         and (
           subscription.current_period_ends_at is null
-          or subscription.current_period_ends_at > timezone('utc', now())
+          or subscription.current_period_ends_at > now()
         )
       )
     );
@@ -179,13 +175,13 @@ begin
     return null;
   end if;
 
-  local_now := timezone(public_business_timezone, timezone('utc', now()));
+  local_now := timezone(public_business_timezone, now());
   effective_start_date := greatest(
     coalesce(selected_start_date, local_now::date),
     local_now::date
   );
   booking_window_end_date := local_now::date + (booking_window_days - 1);
-  minimum_start_at := timezone('utc', now()) + make_interval(mins => minimum_notice_minutes);
+  minimum_start_at := now() + make_interval(mins => minimum_notice_minutes);
 
   if effective_start_date > booking_window_end_date then
     return jsonb_build_object(
@@ -221,12 +217,12 @@ begin
   end if;
 
   for slot_date in
-    select generated_date::date
+    select date_series.generated_date::date
     from generate_series(
       effective_start_date::timestamp,
       effective_end_date::timestamp,
       interval '1 day'
-    ) as generated_date
+    ) as date_series(generated_date)
   loop
     select coalesce(
       jsonb_agg(
@@ -241,8 +237,9 @@ begin
     into day_slots
     from (
       select
-        generated_start as candidate_start,
-        generated_start + make_interval(mins => service_duration_minutes) as candidate_end
+        slot_series.generated_start as candidate_start,
+        slot_series.generated_start + make_interval(mins => service_duration_minutes)
+          as candidate_end
       from public.availability_periods period
       cross join lateral generate_series(
         ((slot_date + period.start_time) at time zone public_business_timezone),
@@ -250,19 +247,19 @@ begin
           (slot_date + period.end_time) at time zone public_business_timezone
         ) - make_interval(mins => service_duration_minutes),
         interval '15 minutes'
-      ) as generated_start
+      ) as slot_series(generated_start)
       where period.business_id = public_business_id
         and period.is_active = true
         and period.weekday = extract(dow from slot_date)::smallint
-        and generated_start >= minimum_start_at
+        and slot_series.generated_start >= minimum_start_at
         and not exists (
           select 1
           from public.appointments appointment
           where appointment.business_id = public_business_id
             and appointment.status in ('pending', 'confirmed')
             and appointment.occupied_range && tstzrange(
-              generated_start,
-              generated_start + make_interval(
+              slot_series.generated_start,
+              slot_series.generated_start + make_interval(
                 mins => service_duration_minutes + buffer_after_minutes
               ),
               '[)'
