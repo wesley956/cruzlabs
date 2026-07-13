@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start --port 3000",
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"console.log('Web tests pending')\""
+  },
+  "dependencies": {
+    "@cruz-agenda/domain": "workspace:*",
+    "@cruz-agenda/supabase": "workspace:*",
+    "@cruz-agenda/ui": "workspace:*",
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "@cruz-agenda/validation": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "tailwindcss": "4.3.2",
+    "typescript": "6.0.3"
+  },
+  "name": "@cruz-agenda/web"
+}

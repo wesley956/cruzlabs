@@ -1,0 +1,2 @@
+-- Dados globais e fictícios serão adicionados nas próximas migrations.
+-- Nunca inclua dados pessoais reais neste arquivo.
