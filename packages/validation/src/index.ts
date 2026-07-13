@@ -2,6 +2,7 @@ export * from "./auth";
 export * from "./availability";
 export * from "./booking-rules";
 export * from "./onboarding";
+export * from "./public-availability";
 export * from "./public-link";
 export * from "./services";
 

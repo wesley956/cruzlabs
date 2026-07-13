@@ -31,7 +31,7 @@
 ## Fase 3 — Agendamento público
 
 - [x] Página pública inicial;
-- [ ] Motor de disponibilidade;
+- [x] Motor de disponibilidade e conflitos de agenda;
 - [ ] Clientes;
 - [ ] Criação transacional;
 - [ ] Cancelamento e reagendamento.

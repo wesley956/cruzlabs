@@ -1,3 +1,5 @@
+import { PublicAvailabilityPicker } from "./public-availability-picker";
+
 export type PublicServiceView = {
   id?: string;
   name: string;
@@ -68,6 +70,17 @@ export function PublicBusinessPage({
   const instagramUrl = data.instagramUsername
     ? `https://www.instagram.com/${encodeURIComponent(data.instagramUsername.replace(/^@/, ""))}`
     : null;
+  const availabilityServices = data.services.flatMap((service) =>
+    service.id
+      ? [
+          {
+            id: service.id,
+            name: service.name,
+            durationMinutes: service.durationMinutes,
+          },
+        ]
+      : [],
+  );
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
@@ -151,28 +164,32 @@ export function PublicBusinessPage({
             </div>
           </section>
 
-          <section className="mt-8 rounded-[2rem] bg-[var(--foreground)] p-7 text-[var(--surface)] sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
-              Agendamento online
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold">
-              {data.onlineBookingPaused
-                ? "Novos agendamentos estão pausados"
-                : "Escolha de horários em breve"}
-            </h2>
-            <p className="mt-3 max-w-2xl leading-7 text-[#d8d0c4]">
-              {data.onlineBookingPaused
-                ? "Os atendimentos já confirmados continuam válidos."
-                : "Esta página já está publicada. A seleção de datas e horários será conectada na próxima fase do sistema."}
-            </p>
-            <button
-              type="button"
-              disabled
-              className="mt-6 min-h-12 rounded-xl bg-[var(--surface)] px-6 font-semibold text-[var(--foreground)] opacity-70"
-            >
-              Escolher data e horário
-            </button>
-          </section>
+          {preview ? (
+            <section className="mt-8 rounded-[2rem] bg-[var(--foreground)] p-7 text-[var(--surface)] sm:p-10">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
+                Agendamento online
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold">
+                Os horários aparecerão após a publicação
+              </h2>
+              <p className="mt-3 max-w-2xl leading-7 text-[#d8d0c4]">
+                A página publicada calculará as vagas reais usando seus serviços, expediente, regras
+                e atendimentos existentes.
+              </p>
+            </section>
+          ) : data.onlineBookingPaused ? (
+            <section className="mt-8 rounded-[2rem] bg-[var(--foreground)] p-7 text-[var(--surface)] sm:p-10">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
+                Agendamento online
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold">Novos agendamentos estão pausados</h2>
+              <p className="mt-3 max-w-2xl leading-7 text-[#d8d0c4]">
+                Os atendimentos já confirmados continuam válidos.
+              </p>
+            </section>
+          ) : availabilityServices.length > 0 ? (
+            <PublicAvailabilityPicker slug={data.slug} services={availabilityServices} />
+          ) : null}
 
           <footer className="py-10 text-center text-sm text-[var(--foreground-muted)]">
             Agendamento online com <strong>Cruz Agenda</strong>
